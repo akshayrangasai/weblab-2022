@@ -8,7 +8,9 @@
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "compile": "npx tsc && node ./dist/index.js",
+    "dev" : "node ./node_modules/nodemon/bin/nodemon.js -e ts --exec \"npm run compile\""
   },
   "author": "",
   "license": "ISC",
