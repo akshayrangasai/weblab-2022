@@ -1,0 +1,5 @@
+- Automatically syncs playlists in two different locations
+  - Also allows individuals of the same platform to share
+  - Additions and subtractions are only allowed through the host applications ( no option to add or remove songs using the web application)
+  - web applicatiosn automatically keeps a history of all songs ever added or removed (unless the user says otherwise)
+  - *Feature that allows for the 
