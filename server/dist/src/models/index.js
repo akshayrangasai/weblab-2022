@@ -4,26 +4,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-var postsRouter = require("../routes/posts");
-var authRouter = require('../routes/auth');
-const bodyParser = require('body-parser');
-const users = require('./users');
+var postsRouter = require("./routes/posts");
+var authRouter = require('./routes/auth');
+const users = require('./src/users');
 const mongoose = require('mongoose');
-const session = require('express-session');
+const session = require('express-connect');
 const mongoStore = require('connect-mongo');
 const app = (0, express_1.default)();
-//app.use();
+app.use(express_1.default.json());
 // Use __CAPS for constants and paths
 const __PORT = 3000;
-const mongoURL = "mongodb://127.0.0.1:27017/weblab";
-mongoose.connect(mongoURL);
-const mongoConnection = mongoose.connection.client;
-app.use(express_1.default.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+//Database Stuff
+/*const mongoURL:string = "mongodb://localhost:27017/weblab";
+
+mongoose.connect(mongoURL,{
+    newURLParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+});
+*/
+const mongoConnection = mongoose.connection;
 app.use(session({
-    store: mongoStore.create({ client: mongoConnection }),
+    store: mongoStore.create({ mongoConnection }),
     resave: false,
-    secret: 'test',
     cookie: {
         maxAge: 1000 * 60 * 60,
         sameSite: true

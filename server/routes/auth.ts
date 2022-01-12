@@ -23,9 +23,7 @@ var redirectURI = "http://localhost:3000/auth/spotify";
 
 */
 
-const mongoURL:string = "mongodb://127.0.0.1:27017/weblab";
 
-mongoose.connect(mongoURL);
 
 /*
 */

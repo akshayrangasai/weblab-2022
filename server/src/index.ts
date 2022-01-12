@@ -1,32 +1,56 @@
 import express from "express";
-var postsRouter = require("./routes/posts");
-var authRouter = require('./routes/auth');
+var postsRouter = require("../routes/posts");
+var authRouter = require('../routes/auth');
+const bodyParser = require('body-parser');
+
+const users = require('./users');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const mongoStore = require('connect-mongo');
 
 
 const app = express();
 
-app.use(express.json());
+
+
+//app.use();
+
+
 // Use __CAPS for constants and paths
 const __PORT = 3000;
 
-//Database Stuff
 
-/*const mongoURL:string = "mongodb://localhost:27017/weblab";
+const mongoURL:string = "mongodb://127.0.0.1:27017/weblab";
+mongoose.connect(mongoURL)
 
-mongoose.connect(mongoURL,{
-    newURLParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-});
-*/
+const mongoConnection = mongoose.connection.client;
+
+app.use(express.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(session({
+
+    store: mongoStore.create({client: mongoConnection}),
+    resave: false,
+    secret:'test',
+    cookie: {
+        maxAge: 1000*60*60,
+        sameSite: true
+    }
+
+
+}));
+
+app.get('/login', users.loginPage);
+app.get('/signup', users.signupPage);
+app.post('/login', users.checkLogin);
+app.post('/signup', users.newSignup);
 app.use('/posts', postsRouter);
 app.use('/auth', authRouter);
 
 
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'Console Error'));
-db.once('open', () => app.listen(__PORT, () => console.log("Listening on port", __PORT)));
+mongoConnection.on('error', console.error.bind(console, 'Console Error'));
+mongoConnection.once('open', () => app.listen(__PORT, () => console.log("Listening on port", __PORT)));
 
 
