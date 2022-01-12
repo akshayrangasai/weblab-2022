@@ -19,6 +19,7 @@
     "express": "^4.17.2",
     "lodash": "^4.17.21",
     "mongod": "^2.0.0",
+    "mongodb": "^4.3.0",
     "mongoose": "^6.1.6",
     "spotify-web-api-node": "^5.0.2"
   },
