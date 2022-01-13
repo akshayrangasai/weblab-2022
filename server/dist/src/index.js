@@ -16,20 +16,12 @@ const app = (0, express_1.default)();
 //app.use();
 // Use __CAPS for constants and paths
 const __PORT = 3000;
-const mongoURL = "mongodb://127.0.0.1:27017/weblab";
+//const mongoURL:string = "mongodb://127.0.0.1:27017/weblab";
+const mongoURL = "mongodb+srv://iy125:84cb47gV_m@cluster0.phipo.mongodb.net/Weblab";
 mongoose.connect(mongoURL);
 const mongoConnection = mongoose.connection;
 app.use(express_1.default.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-    store: mongoStore.create({ client: mongoConnection.client }),
-    resave: false,
-    secret: 'test',
-    cookie: {
-        maxAge: 3600000
-    },
-    unset: 'destroy'
-}));
 app.get('/login', users.loginPage);
 app.get('/signup', users.signupPage);
 app.get('/logout', users.logout);
@@ -38,5 +30,16 @@ app.post('/signup', users.newSignup);
 app.use('/posts', postsRouter);
 app.use('/connectService', appAuthentication_1.isAuth, serviceRouter);
 mongoConnection.on('error', console.error.bind(console, 'Console Error'));
-mongoConnection.once('open', () => app.listen(__PORT, () => console.log("Listening on port", __PORT)));
+mongoConnection.once('open', () => {
+    app.use(session({
+        store: mongoStore.create({ client: mongoConnection.client }),
+        resave: false,
+        secret: 'test',
+        cookie: {
+            maxAge: 3600000
+        },
+        unset: 'destroy'
+    }));
+    app.listen(__PORT, () => console.log("Listening on port", __PORT));
+});
 //# sourceMappingURL=index.js.map

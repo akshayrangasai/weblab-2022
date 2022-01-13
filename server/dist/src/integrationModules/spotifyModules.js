@@ -16,6 +16,11 @@ var scopes = ['user-read-private', 'user-read-email', 'user-follow-modify', 'use
 var spotifySecret = "84e54979928a4ab0a4688209f71ee924";
 var spotifyClient = "68fada0983aa44bab35d51a6c88bad7a";
 var redirectURI = "http://localhost:3000/connectService/spotify";
+/*
+
+There is some potential to manage getToken with sessions, have to read up more and figure out best way to implement
+
+*/
 function getToken(user) {
     return __awaiter(this, void 0, void 0, function* () {
         return authModel.findOne({ user: user }).then((data) => {
@@ -105,8 +110,6 @@ Spotify API Requests and Return Objects
 const getUserPlaylists = (req, res) => {
     getToken(req.session.user).then((data) => {
         if (data) {
-            //console.log('The new access token is', data.body['access_token']); 
-            //res.send(data);
             try {
                 var api = new spotifyWebAPI({ accessToken: data.body['access_token'] });
                 console.log('trying to connect to spotify');
@@ -119,7 +122,6 @@ const getUserPlaylists = (req, res) => {
         else
             res.redirect('./spotifyTrigger');
     });
-    //console.log(token);
 };
 exports.getUserPlaylists = getUserPlaylists;
 //# sourceMappingURL=spotifyModules.js.map
