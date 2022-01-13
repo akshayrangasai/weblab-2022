@@ -27,11 +27,12 @@ const signupPage = (req, res) => {
     res.send(signUpHTML);
 };
 const checkLogin = (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     appAuthModel.findOne({ user: req.body.user }).then((response, err) => {
-        console.log(response);
+        //console.log(response);
         if (response) {
             if (response.password == req.body.password) {
+                console.log('Sessions are', req.session);
                 req.session.user = req.body.user;
                 req.session.isAuth = true;
                 res.send('loggedin');

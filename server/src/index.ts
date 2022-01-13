@@ -32,21 +32,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-
-app.get('/login', users.loginPage);
-app.get('/signup', users.signupPage);
-app.get('/logout', users.logout);
-app.post('/login', users.checkLogin);
-app.post('/signup', users.newSignup);
-app.use('/posts', postsRouter);
-app.use('/connectService', isAuth, serviceRouter);
-
-
 mongoConnection.on('error', console.error.bind(console, 'Console Error'));
 mongoConnection.once('open', () => {
     
     app.use(session({
-
         store: mongoStore.create({client: mongoConnection.client}),
         resave: false,
         secret:'test',
@@ -54,9 +43,14 @@ mongoConnection.once('open', () => {
             maxAge: 3600000
         },
         unset: 'destroy'
-    
-    
     }));
+    app.get('/login', users.loginPage);
+    app.get('/signup', users.signupPage);
+    app.get('/logout', users.logout);
+    app.post('/login', users.checkLogin);
+    app.post('/signup', users.newSignup);
+    app.use('/posts', postsRouter);
+    app.use('/connectService', isAuth, serviceRouter);
     app.listen(__PORT, () => console.log("Listening on port", __PORT))}
     
     );

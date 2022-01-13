@@ -22,13 +22,6 @@ mongoose.connect(mongoURL);
 const mongoConnection = mongoose.connection;
 app.use(express_1.default.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.get('/login', users.loginPage);
-app.get('/signup', users.signupPage);
-app.get('/logout', users.logout);
-app.post('/login', users.checkLogin);
-app.post('/signup', users.newSignup);
-app.use('/posts', postsRouter);
-app.use('/connectService', appAuthentication_1.isAuth, serviceRouter);
 mongoConnection.on('error', console.error.bind(console, 'Console Error'));
 mongoConnection.once('open', () => {
     app.use(session({
@@ -40,6 +33,13 @@ mongoConnection.once('open', () => {
         },
         unset: 'destroy'
     }));
+    app.get('/login', users.loginPage);
+    app.get('/signup', users.signupPage);
+    app.get('/logout', users.logout);
+    app.post('/login', users.checkLogin);
+    app.post('/signup', users.newSignup);
+    app.use('/posts', postsRouter);
+    app.use('/connectService', appAuthentication_1.isAuth, serviceRouter);
     app.listen(__PORT, () => console.log("Listening on port", __PORT));
 });
 //# sourceMappingURL=index.js.map

@@ -54,20 +54,22 @@ const signupPage = (req:any,res:any) => {
 
 const checkLogin = (req:any,res:any) => {
 
-    console.log(req.body);
+    //console.log(req.body);
 
     appAuthModel.findOne({user:req.body.user}).then(
 
 
             (response:any,err:any) => {
 
-                console.log(response);
+                //console.log(response);
 
                 if(response)
                 {
 
                     if(response.password == req.body.password)
                     {
+                        console.log('Sessions are',req.session);
+
                         req.session.user = req.body.user;
                         req.session.isAuth = true;
                         res.send('loggedin')
