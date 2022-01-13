@@ -1,5 +1,10 @@
+import { connect, mongo } from "mongoose";
+
 //const mongoose = require('mongoose');
 const appAuthModel = require('./models/appauth');
+var express = require('express');
+var session = require('express-session');
+import MongoStore from "connect-mongo";
 
 
 const loginHTML = "<html><head></head><body><form name = 'loginform' action='./login' method = POST><input name = 'user'><input name = 'password'><input type = submit></form></body></html>";
@@ -7,10 +12,30 @@ const signUpHTML = "<html><head></head><body><form name = 'signupform'  action='
 
 
 
+const logout = (req:any,res:any) => {
+
+    if(req.session) 
+    {
+    console.log(req.sessionID)
+    
+    //MongoStore.destroy(req.sessionID);
+    req.session = null;
+    
+    console.log(req.session)
+    res.redirect('/login');
+    }
+    else
+    res.redirect('/login');
+
+
+};
+
 const loginPage = (req:any,res:any) => {
 
-    console.log('login called');
+    
 
+    console.log('login called');
+    console.log(req.session);
 
     res.send(loginHTML);
 
@@ -28,6 +53,47 @@ const signupPage = (req:any,res:any) => {
 
 
 const checkLogin = (req:any,res:any) => {
+
+    console.log(req.body);
+
+    appAuthModel.findOne({user:req.body.user}).then(
+
+
+            (response:any,err:any) => {
+
+                console.log(response);
+
+                if(response)
+                {
+
+                    if(response.password == req.body.password)
+                    {
+                        req.session.user = req.body.user;
+                        req.session.isAuth = true;
+                        res.send('loggedin')
+
+                    }
+                    
+                    else
+                    res.send('fuckoff')
+
+                }
+
+                else
+                {
+
+                    res.send("Invalid User");
+                }
+
+
+
+            }
+
+
+
+
+
+    );
 
 
 
@@ -63,4 +129,4 @@ newUser.save().then((response:any, err:any) => {
 
 };
 
-module.exports = {loginPage, signupPage, checkLogin, newSignup};
+module.exports = {loginPage, signupPage, checkLogin, newSignup, logout};

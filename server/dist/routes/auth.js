@@ -56,7 +56,7 @@ authRouter.get('/spotify', (req, res) => {
     spotifyAPI.authorizationCodeGrant(code).then(function (data) {
         return __awaiter(this, void 0, void 0, function* () {
             const token = new authModel({
-                'user': 'akshayrangasai',
+                'user': req.session.user,
                 'authToken': data.body['access_token'],
                 'refreshToken': data.body['refresh_token'],
                 'timeStamp': data.headers['date']
