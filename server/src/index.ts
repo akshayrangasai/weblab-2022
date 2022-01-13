@@ -36,7 +36,7 @@ app.use(session({
     resave: false,
     secret:'test',
     cookie: {
-        maxAge: 36000
+        maxAge: 3600000
     },
     unset: 'destroy'
 
