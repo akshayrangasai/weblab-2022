@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Dongle&display=swap');
+
+:root {
+    --primary: #516674;
+    --grey: #b9b5b586;
+    --white: #fff;
+    --xs: 4px;
+    --s: 8px;
+    --m: 16px;
+    --l: 24px;
+}
+
+body {
+    margin: 0;
+    font-family: 'Dongle', sans-serif;
+}
+
+.navContainer {
+    padding: var(--s) var(--m);
+    background-color: var(--primary);
+}
