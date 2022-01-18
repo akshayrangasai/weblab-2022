@@ -40,7 +40,9 @@ mongoConnection.once('open', () => {
         resave: false,
         secret:'test',
         cookie: {
-            maxAge: 3600000
+            maxAge: 3600000,
+            httpOnly: false,
+            sameSite: false
         },
         unset: 'destroy'
     }));

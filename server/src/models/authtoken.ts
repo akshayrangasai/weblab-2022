@@ -10,7 +10,7 @@ interface authToken extends Document{
 
 const authSchema: Schema = new Schema({
 
-    user: {type: String, required : true},
+    user: {type: String, required : true, unique : true},
     authToken: {type: String, required : true},
     refreshToken: {type: String, required : true},
     timeStamp: {type: Date, required: true}
