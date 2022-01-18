@@ -1,5 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form'
 
 class AuthForm extends React.Component{
 
@@ -31,12 +34,23 @@ class AuthForm extends React.Component{
         //if(this.props.type == "login")
         //{
             return(
-
-                <form name = "loginform" action = "./login" method = "POST">
+                <Container fluid>
+                    <row>
+                        <Form>
+                            <Form.Group controlID = 'basicLogin' className = 'mb-3'>
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control type="email" placeholder="Enter email" />
+                                <Form.Text className="text-muted">
+                                    We'll never share your email with anyone else.
+                                </Form.Text>
+                            </Form.Group>
+                
                     <input type = "text" name = "user" onChange={this.onChange} />
                     <input type = "password" name = "password" onChange={this.onChange} />
-                    <input type = "button" onClick={this.handleClick} />
-                </form>
+                    <Button onClick={this.handleClick}> Submit </Button>
+                        </Form>
+                    </row>
+                </Container>
 
             );
         //}
