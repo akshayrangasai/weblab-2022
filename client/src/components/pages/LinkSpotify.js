@@ -1,5 +1,5 @@
 import React from "react";
-import "./LinkSpotify.css";
+import "./Skeleton.css";
 
 /**
  * Component that links to their spotify page automatically, gets authorization, and sends them to the dashboard

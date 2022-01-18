@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@reach/router";
 
-import "./NavBar.css";
+//import "./NavBar.css";
 
 /**
  * The navigation bar is always at the top.
