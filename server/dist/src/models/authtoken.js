@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const authSchema = new mongoose_1.Schema({
-    user: { type: String, required: true },
+    user: { type: String, required: true, unique: true },
     authToken: { type: String, required: true },
     refreshToken: { type: String, required: true },
     timeStamp: { type: Date, required: true }
