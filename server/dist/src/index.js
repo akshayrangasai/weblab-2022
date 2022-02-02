@@ -8,6 +8,7 @@ const appAuthentication_1 = require("../middleware/appAuthentication");
 var postsRouter = require("../routes/posts");
 var serviceRouter = require('../routes/connectServices');
 const bodyParser = require('body-parser');
+var cors = require('cors');
 const users = require('./users');
 const mongoose = require('mongoose');
 const session = require('express-session');
@@ -35,6 +36,7 @@ mongoConnection.once('open', () => {
         },
         unset: 'destroy'
     }));
+    app.use(cors());
     app.get('/login', users.loginPage);
     app.get('/signup', users.signupPage);
     app.get('/logout', users.logout);
