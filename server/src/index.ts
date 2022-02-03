@@ -14,7 +14,7 @@ const mongoStore = require('connect-mongo');
 const app = express();
 
 
-
+app.use(cors({credentials:true, origin:'http://localhost:3001'}));
 //app.use();
 
 
@@ -28,9 +28,11 @@ mongoose.connect(mongoURL)
 
 const mongoConnection = mongoose.connection;
 
+
 app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
 
 
 mongoConnection.on('error', console.error.bind(console, 'Console Error'));
@@ -41,20 +43,20 @@ mongoConnection.once('open', () => {
         resave: false,
         secret:'test',
         cookie: {
-            maxAge: 3600000,
+            maxAge: 3600000000,
             httpOnly: false,
-            sameSite: false
+            sameSite: 'none',
+            secure:false
         },
         unset: 'destroy'
     }));
-    app.use(cors());
     app.get('/login', users.loginPage);
     app.get('/signup', users.signupPage);
     app.get('/logout', users.logout);
     app.post('/login', users.checkLogin);
     app.post('/signup', users.newSignup);
     app.use('/posts', postsRouter);
-    app.use('/connectService', isAuth, serviceRouter);
+    app.use('/connectService', serviceRouter);
     app.listen(__PORT, () => console.log("Listening on port", __PORT))}
     
     );
