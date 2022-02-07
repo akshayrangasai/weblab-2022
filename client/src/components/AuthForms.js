@@ -12,7 +12,9 @@ class AuthForm extends React.Component{
             user : null,
             password:null
         };
-        //this.bind(this.onChange,this);
+        //bind(this.onChange,this);
+        this.handleClick = this.handleClick.bind(this);
+        axios.defaults.withCredentials = true;
 
     }
 
@@ -27,6 +29,8 @@ class AuthForm extends React.Component{
     handleClick(e)
     {
         e.preventDefault();
+        console.log(this.state);
+        axios.post('http://localhost:3000/login',{user:this.state.user, password:this.state.password}).then(message => console.log(message));
         console.log(e.target);
 
     }

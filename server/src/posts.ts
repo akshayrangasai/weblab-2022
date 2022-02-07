@@ -25,6 +25,8 @@ const postSchema: Schema = new Schema({
 
 const getAllPosts = async (req:any,res:any) => {
 
+    console.log(req.cookies);
+
     const allPosts = await postModel.find().lean().then((response:any, err:any) => {console.log(JSON.stringify(response)); res.send(response);});
 };
 
@@ -76,4 +78,16 @@ const getPost = (req:any, res:any) => {
 
 }
 
-module.exports = {getAllPosts, addRandomData, getPost};
+const upvotePost = (req:any, res:any) => {
+
+    postModel.findOneAndUpdate({ _id : req.params.id}, {$inc:{'upvotes':1}}).then((answer:any, err:any) => {if(!err) {res.sendStatus(200);console.log(answer.upvotes)}});
+
+}
+
+const downvotePost = (req:any, res:any) => {
+
+    postModel.findOneAndUpdate({ _id : req.params.id}, {$inc:{'downvotes':1}}).then((answer:any, err:any) => {if(!err) {res.sendStatus(200);console.log(answer.downvotes)}});
+
+}
+
+module.exports = {getAllPosts, addRandomData, getPost, upvotePost, downvotePost};

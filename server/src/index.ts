@@ -9,12 +9,13 @@ const users = require('./users');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const mongoStore = require('connect-mongo');
-
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
 
 app.use(cors({credentials:true, origin:'http://localhost:3001'}));
+app.use(cookieParser());
 //app.use();
 
 
@@ -56,7 +57,7 @@ mongoConnection.once('open', () => {
     app.post('/login', users.checkLogin);
     app.post('/signup', users.newSignup);
     app.use('/posts', postsRouter);
-    app.use('/connectService', serviceRouter);
+    app.use('/connectService', isAuth, serviceRouter);
     app.listen(__PORT, () => console.log("Listening on port", __PORT))}
     
     );

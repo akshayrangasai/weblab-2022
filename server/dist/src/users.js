@@ -1,17 +1,26 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv = require('dotenv');
 //const mongoose = require('mongoose');
 const appAuthModel = require('./models/appauth');
 var express = require('express');
 var session = require('express-session');
 const loginHTML = "<html><head></head><body><form name = 'loginform' action='./login' method = POST><input name = 'user'><input name = 'password'><input type = submit></form></body></html>";
 const signUpHTML = "<html><head></head><body><form name = 'signupform'  action='./signup' method = POST><input type=text name = 'user'><input name = 'password'><input type=text name = 'email'><input type = submit></form></body></html>";
+dotenv.config();
+console.log(process.env);
+const jwt = require('jsonwebtoken');
+function generateAccessToken(user) {
+    return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '24h' });
+}
 const logout = (req, res) => {
-    if (req.session) {
-        console.log(req.sessionID);
-        //MongoStore.destroy(req.sessionID);
+    if (req.cookies.accessToken) {
+        console.log(req.cookies.accessToken);
+        /*
+        Have a server side check for actually active tokens or something longer terms
         req.session = null;
-        console.log(req.session);
+        */
+        res.clearCookie('accessToken');
         res.redirect('/login');
     }
     else
@@ -32,16 +41,22 @@ const checkLogin = (req, res) => {
         //console.log(response);
         if (response) {
             if (response.password == req.body.password) {
-                console.log('Sessions are', req.session);
+                /*
+                console.log('Sessions are',req.session);
+
                 req.session.user = req.body.user;
                 req.session.isAuth = true;
-                res.send('loggedin');
+                */
+                const accessToken = generateAccessToken({ user: req.body.user });
+                console.log(accessToken);
+                res.cookie('accessToken', accessToken, { httpOnly: true });
+                res.json(req.body);
             }
             else
-                res.send('fuckoff');
+                res.sendStatus(403);
         }
         else {
-            res.send("Invalid User");
+            res.sendStatus(403);
         }
     });
 };
@@ -54,7 +69,11 @@ const newSignup = (req, res) => {
         timeStamp: new Date()
     });
     newUser.save().then((response, err) => {
-        res.send(response);
+        const accessToken = generateAccessToken({ user: req.body.user });
+        console.log(accessToken);
+        res.cookie('accessToken', accessToken, { httpOnly: true });
+        res.json(response);
+        //res.send(response);
     });
 };
 module.exports = { loginPage, signupPage, checkLogin, newSignup, logout };

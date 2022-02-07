@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+.PostCard{
+  background : rgba(240, 240, 240, 0.1);
+  width:50%;
+  margin: 10px auto 10px auto;
+  padding:5px;
+  max-height: 80px;
+  border: 1px 1px 1px 1px #000;
+}
+.PostTitle{
+
+  color: #da1d9b;
+  font-size: 24px;
+
+}
+
+.PostDescription{
+
+  color: #CE2929;
+  font-size:12px;
+
+}
+
+.votes{
+
+  color:#f6c279;
+  font-size:14px;
+  font-style:bold;
+
+}

@@ -32,6 +32,7 @@ const postSchema: Schema = new Schema({
 
 */
 const getAllPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.cookies);
     const allPosts = yield postModel.find().lean().then((response, err) => { console.log(JSON.stringify(response)); res.send(response); });
 });
 const addRandomData = (req, res) => {
@@ -62,5 +63,17 @@ const addRandomData = (req, res) => {
 const getPost = (req, res) => {
     postModel.find({ _id: req.params.id }).lean().then((answer, err) => res.send(answer));
 };
-module.exports = { getAllPosts, addRandomData, getPost };
+const upvotePost = (req, res) => {
+    postModel.findOneAndUpdate({ _id: req.params.id }, { $inc: { 'upvotes': 1 } }).then((answer, err) => { if (!err) {
+        res.sendStatus(200);
+        console.log(answer.upvotes);
+    } });
+};
+const downvotePost = (req, res) => {
+    postModel.findOneAndUpdate({ _id: req.params.id }, { $inc: { 'downvotes': 1 } }).then((answer, err) => { if (!err) {
+        res.sendStatus(200);
+        console.log(answer.downvotes);
+    } });
+};
+module.exports = { getAllPosts, addRandomData, getPost, upvotePost, downvotePost };
 //# sourceMappingURL=posts.js.map

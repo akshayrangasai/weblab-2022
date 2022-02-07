@@ -1,27 +1,37 @@
 import { connect, mongo } from "mongoose";
-
+const dotenv = require('dotenv');
 //const mongoose = require('mongoose');
 const appAuthModel = require('./models/appauth');
 var express = require('express');
 var session = require('express-session');
 import MongoStore from "connect-mongo";
+import { response } from "express";
 
 
 const loginHTML = "<html><head></head><body><form name = 'loginform' action='./login' method = POST><input name = 'user'><input name = 'password'><input type = submit></form></body></html>";
 const signUpHTML = "<html><head></head><body><form name = 'signupform'  action='./signup' method = POST><input type=text name = 'user'><input name = 'password'><input type=text name = 'email'><input type = submit></form></body></html>";
 
+dotenv.config();
+console.log(process.env);
+const jwt = require('jsonwebtoken');
 
+function generateAccessToken(user:any) {
+    return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '24h' });
+  }
 
 const logout = (req:any,res:any) => {
 
-    if(req.session) 
+    if(req.cookies.accessToken) 
     {
-    console.log(req.sessionID)
+    console.log(req.cookies.accessToken);
     
-    //MongoStore.destroy(req.sessionID);
+    /*
+    Have a server side check for actually active tokens or something longer terms
     req.session = null;
-    
-    console.log(req.session)
+    */
+
+    res.clearCookie('accessToken');
+
     res.redirect('/login');
     }
     else
@@ -68,23 +78,30 @@ const checkLogin = (req:any,res:any) => {
 
                     if(response.password == req.body.password)
                     {
+                        /*
                         console.log('Sessions are',req.session);
 
                         req.session.user = req.body.user;
                         req.session.isAuth = true;
-                        res.send('loggedin')
+                        */
+
+
+                        const accessToken = generateAccessToken({user: req.body.user});
+                        console.log(accessToken);
+                        res.cookie('accessToken',accessToken, {httpOnly:true});
+                        res.json(req.body);
 
                     }
                     
                     else
-                    res.send('fuckoff')
+                    res.sendStatus(403)
 
                 }
 
                 else
                 {
 
-                    res.send("Invalid User");
+                    res.sendStatus(403);
                 }
 
 
@@ -122,8 +139,12 @@ const newUser = new appAuthModel(
 
 newUser.save().then((response:any, err:any) => {
 
+    const accessToken = generateAccessToken({user:req.body.user});
+    console.log(accessToken);
+    res.cookie('accessToken',accessToken, {httpOnly:true});
+    res.json(response);
 
-    res.send(response);
+    //res.send(response);
 
 
 })
