@@ -7,6 +7,8 @@ import {
 } from "react-router-dom";
 import React from 'react';
 import AuthForm from './components/AuthForms';
+import SignUpForm from './components/SignUp';
+import NewPost from './components/NewPost';
 import Posts from './components/Posts';
 import NavBar from './components/NavBar';
 import {Outlet} from "react-router-dom";
@@ -24,7 +26,9 @@ class App extends React.Component {
 />
      <Routes>
         <Route path='login' element = {<AuthForm />} />
+        <Route path='signup' element = {<SignUpForm />} />
         <Route path='posts' element = {<Posts />} />
+        <Route path = 'newpost' element = {<NewPost />} />
       </Routes>
       
     </div>

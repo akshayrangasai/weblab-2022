@@ -33,8 +33,10 @@ const logout = (req:any,res:any) => {
     res.clearCookie('accessToken');
 
     res.redirect('/login');
+
     }
     else
+    
     res.redirect('/login');
 
 
@@ -89,6 +91,7 @@ const checkLogin = (req:any,res:any) => {
                         const accessToken = generateAccessToken({user: req.body.user});
                         console.log(accessToken);
                         res.cookie('accessToken',accessToken, {httpOnly:true});
+                        res.locals.user = req.body.user;
                         res.json(req.body);
 
                     }
@@ -142,6 +145,7 @@ newUser.save().then((response:any, err:any) => {
     const accessToken = generateAccessToken({user:req.body.user});
     console.log(accessToken);
     res.cookie('accessToken',accessToken, {httpOnly:true});
+    res.locals.user = req.body.user;
     res.json(response);
 
     //res.send(response);

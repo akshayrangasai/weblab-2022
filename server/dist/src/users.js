@@ -50,6 +50,7 @@ const checkLogin = (req, res) => {
                 const accessToken = generateAccessToken({ user: req.body.user });
                 console.log(accessToken);
                 res.cookie('accessToken', accessToken, { httpOnly: true });
+                res.locals.user = req.body.user;
                 res.json(req.body);
             }
             else
@@ -72,6 +73,7 @@ const newSignup = (req, res) => {
         const accessToken = generateAccessToken({ user: req.body.user });
         console.log(accessToken);
         res.cookie('accessToken', accessToken, { httpOnly: true });
+        res.locals.user = req.body.user;
         res.json(response);
         //res.send(response);
     });

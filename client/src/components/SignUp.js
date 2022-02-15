@@ -4,13 +4,14 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 
-class AuthForm extends React.Component{
+class SignUpForm extends React.Component{
 
     constructor(props){
         super(props);
         this.state = {
             user : null,
-            password:null
+            password:null,
+            email:null
         };
         //bind(this.onChange,this);
         this.handleClick = this.handleClick.bind(this);
@@ -30,7 +31,7 @@ class AuthForm extends React.Component{
     {
         e.preventDefault();
         console.log(this.state);
-        axios.post('http://localhost:3000/login',{user:this.state.user, password:this.state.password}).then(message => console.log(message));
+        axios.post('http://localhost:3000/signup',{user:this.state.user, password:this.state.password, email : this.state.email}).then(message => console.log(message));
         console.log(e.target);
 
     }
@@ -43,7 +44,9 @@ class AuthForm extends React.Component{
                         <Form>
                             <Form.Group controlID = 'basicLogin' className = 'mb-3'>
                                 <Form.Label>User Name</Form.Label>
-                                <Form.Control type="text" name = 'user' placeholder="Enter Username" onChange={this.onChange} />
+                                <Form.Control type="text" name = 'user' placeholder="wildestdreams1234" onChange={this.onChange} />
+                                <Form.Label>Email Address</Form.Label>
+                                <Form.Control type="email" name = 'email' placeholder="taylor@swift.com" onChange={this.onChange} />
                                 <Form.Label>Password</Form.Label>
                                 <Form.Control type="password" name = 'password' placeholder="Enter Password" onChange={this.onChange} />
                                 <Form.Text className="text-muted">
@@ -63,4 +66,4 @@ class AuthForm extends React.Component{
 
 }
 
-export default AuthForm;
+export default SignUpForm;
