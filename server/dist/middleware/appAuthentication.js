@@ -2,26 +2,32 @@
 //import express from 'express';
 /*Verify JWT here For Auth Checks*/
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isAuth = void 0;
+exports.resolveUser = exports.isAuth = void 0;
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 function isAuth(req, res, next) {
     console.log(req.cookies.accessToken);
     //console.log(req.session);
-    jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            console.log(err);
-            res.sendStatus(403);
-        }
-        else {
-            console.log(decoded);
-            next();
-        }
-        //if(!decoded.user)
-        //res.send(403);
-        //res.send({signedin:true});
-    });
+    try {
+        jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                console.log(err);
+                res.sendStatus(403);
+            }
+            else {
+                console.log(decoded);
+                res.locals.user = decoded.user;
+                next();
+            }
+            //if(!decoded.user)
+            //res.send(403);
+            //res.send({signedin:true});
+        });
+    }
+    catch (err) {
+        console.log(err);
+    }
     /*
     if(req.session)
     {
@@ -34,5 +40,26 @@ function isAuth(req, res, next) {
     */
 }
 exports.isAuth = isAuth;
+;
+function resolveUser(req, res) {
+    console.log(req.cookies.accessToken);
+    //console.log(req.session);
+    try {
+        jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                console.log(err);
+                return null;
+            }
+            else {
+                return decoded;
+            }
+        });
+    }
+    catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+exports.resolveUser = resolveUser;
 ;
 //# sourceMappingURL=appAuthentication.js.map

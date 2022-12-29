@@ -12,7 +12,7 @@ function NavBar(){
           paddingBottom: "1rem"
         }}
       >
-              <BrowserRouter>
+        <BrowserRouter>
                 <Link to="/posts">Posts</Link> | {" "}
                 <Link to="/dashboard">Dashboard</Link>
         </BrowserRouter>

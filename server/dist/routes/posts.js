@@ -7,7 +7,7 @@ const postsRouter = (0, express_1.Router)();
 const postModel = require('../src/posts');
 //postsRouter.get('/', (req, res) => {console.log("Woah hit posts"); res.send("Posts Baby")});
 postsRouter.get('/', postModel.getAllPosts);
-postsRouter.get('/new/add', postModel.addRandomData);
+postsRouter.post('/new/add', postModel.addRandomData);
 postsRouter.get('/post/:id', postModel.getPost);
 postsRouter.get('/upvote/:id', appAuthentication_1.isAuth, postModel.upvotePost);
 postsRouter.get('/downvote/:id', appAuthentication_1.isAuth, postModel.downvotePost);

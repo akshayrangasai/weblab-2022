@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 //const mongoose = require('mongoose');
 const postModel = require('./models/posts');
+const appAuth = require('../middleware/appAuthentication');
 /*
 Schema for reference
 
@@ -36,15 +37,21 @@ const getAllPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const allPosts = yield postModel.find().lean().then((response, err) => { console.log(JSON.stringify(response)); res.send(response); });
 });
 const addRandomData = (req, res) => {
+    const user_name = res.locals.user || 'Rorz';
+    const post_title = req.body.postTitle || 'This is test data';
+    const post_desc = req.body.postDescription || 'This is sample description';
+    const purl = req.body.playlistURL || 'This is test data';
+    console.log('Add data Called');
+    console.log(req.body);
     const newData = new postModel({
-        user: 'akshay',
-        postTitle: 'This is test data',
-        postDescription: 'Sucks to be working with mongodb man',
+        user: user_name,
+        postTitle: post_title,
+        postDescription: post_desc,
         upvotes: 10,
         downvotes: 10,
-        playlistURL: 'lol',
-        playlistName: 'lol',
-        playlistID: 'lol',
+        playlistURL: purl,
+        playlistName: 'TBD',
+        playlistID: 'TBD',
         whichApp: 'spotify',
         playlistItems: ['lol'],
         playlistItrmIDs: ['lol'],
@@ -56,7 +63,7 @@ const addRandomData = (req, res) => {
             res.error(500).send(err);
         }
         else {
-            res.redirect('http://localhost:3000/posts/' + response._id);
+            res.redirect('http://localhost:3000/posts/post/' + response._id);
         }
     });
 };

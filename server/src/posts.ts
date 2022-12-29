@@ -1,6 +1,6 @@
 //const mongoose = require('mongoose');
 const postModel = require('./models/posts');
-
+const appAuth = require('../middleware/appAuthentication');
 /*
 Schema for reference 
 
@@ -32,17 +32,24 @@ const getAllPosts = async (req:any,res:any) => {
 
 const addRandomData = (req:any, res:any) => {
 
+    const user_name = res.locals.user || 'Rorz';
+    const post_title = req.body.postTitle || 'This is test data';
+    const post_desc = req.body.postDescription || 'This is sample description';
+    const purl = req.body.playlistURL || 'This is test data';
+    console.log('Add data Called');
+    console.log(req.body);
+
 const newData:any = new postModel(
 
     {
-    user: 'akshay',
-    postTitle: 'This is test data',
-    postDescription: 'Sucks to be working with mongodb man',
+    user: user_name,
+    postTitle: post_title,
+    postDescription: post_desc,
     upvotes: 10,
     downvotes: 10,
-    playlistURL: 'lol',
-    playlistName: 'lol',
-    playlistID: 'lol',
+    playlistURL: purl,
+    playlistName: 'TBD',
+    playlistID: 'TBD',
     whichApp: 'spotify',
     playlistItems: ['lol'],
     playlistItrmIDs: ['lol'],
@@ -64,7 +71,7 @@ newData.save().then( (response:any, err:any) => {
     res.error(500).send(err);
     }
     else{
-    res.redirect('http://localhost:3000/posts/'+response._id);
+    res.redirect('http://localhost:3000/posts/post/'+response._id);
     }
 }
 

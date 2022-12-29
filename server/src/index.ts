@@ -23,8 +23,8 @@ app.use(cookieParser());
 const __PORT = 3000;
 
 
-//const mongoURL:string = "mongodb://127.0.0.1:27017/weblab";
-const mongoURL:string = "mongodb+srv://iy125:84cb47gV_m@cluster0.phipo.mongodb.net/Weblab";
+const mongoURL:string = "mongodb://127.0.0.1:27017/weblab";
+//const mongoURL:string = "mongodb+srv://iy125:84cb47gV_m@cluster0.phipo.mongodb.net/Weblab";
 mongoose.connect(mongoURL)
 
 const mongoConnection = mongoose.connection;
@@ -56,7 +56,7 @@ mongoConnection.once('open', () => {
     app.get('/logout', users.logout);
     app.post('/login', users.checkLogin);
     app.post('/signup', users.newSignup);
-    app.use('/posts', postsRouter);
+    app.use('/posts', isAuth, postsRouter);
     app.use('/connectService', isAuth, serviceRouter);
     app.listen(__PORT, () => console.log("Listening on port", __PORT))}
     

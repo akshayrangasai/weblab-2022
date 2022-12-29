@@ -11,7 +11,7 @@ function isAuth(req:any, res:any, next:any):any {
     console.log(req.cookies.accessToken);
 
     //console.log(req.session);
-
+    try{
     jwt.verify(req.cookies.accessToken,process.env.JWT_SECRET, (err:any, decoded:any) => {
 
         if(err){
@@ -22,6 +22,7 @@ function isAuth(req:any, res:any, next:any):any {
         {
         
             console.log(decoded);
+            res.locals.user = decoded.user;
 
             next();
         }
@@ -33,6 +34,11 @@ function isAuth(req:any, res:any, next:any):any {
         //res.send({signedin:true});
 
     });
+}
+catch(err)
+{
+    console.log(err);
+}
 
     /*
     if(req.session)
@@ -47,4 +53,35 @@ function isAuth(req:any, res:any, next:any):any {
 
 };
 
-export {isAuth}
+
+function resolveUser(req:any, res:any):any {
+
+    console.log(req.cookies.accessToken);
+
+    //console.log(req.session);
+    try{
+    jwt.verify(req.cookies.accessToken,process.env.JWT_SECRET, (err:any, decoded:any) => {
+
+        if(err){
+            console.log(err);
+            return null;
+        }
+        else
+        {
+            return decoded;
+
+        }
+
+    });
+}
+catch(err)
+{
+    console.log(err);
+    return null;
+}
+
+
+};
+
+
+export {isAuth, resolveUser}

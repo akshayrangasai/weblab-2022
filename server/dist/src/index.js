@@ -20,8 +20,8 @@ app.use(cookieParser());
 //app.use();
 // Use __CAPS for constants and paths
 const __PORT = 3000;
-//const mongoURL:string = "mongodb://127.0.0.1:27017/weblab";
-const mongoURL = "mongodb+srv://iy125:84cb47gV_m@cluster0.phipo.mongodb.net/Weblab";
+const mongoURL = "mongodb://127.0.0.1:27017/weblab";
+//const mongoURL:string = "mongodb+srv://iy125:84cb47gV_m@cluster0.phipo.mongodb.net/Weblab";
 mongoose.connect(mongoURL);
 const mongoConnection = mongoose.connection;
 app.use(express_1.default.json());
@@ -45,7 +45,7 @@ mongoConnection.once('open', () => {
     app.get('/logout', users.logout);
     app.post('/login', users.checkLogin);
     app.post('/signup', users.newSignup);
-    app.use('/posts', postsRouter);
+    app.use('/posts', appAuthentication_1.isAuth, postsRouter);
     app.use('/connectService', appAuthentication_1.isAuth, serviceRouter);
     app.listen(__PORT, () => console.log("Listening on port", __PORT));
 });
